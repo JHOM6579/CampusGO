@@ -1,0 +1,23 @@
+{
+  "name": "campus-go-frontend",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "lucide-react": "^0.548.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^7.9.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.1.1",
+    "baseline-browser-mapping": "^2.10.29",
+    "vite": "^8.0.12",
+    "vite-plugin-svgr": "^4.5.0"
+  }
+}
