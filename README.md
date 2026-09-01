@@ -52,7 +52,7 @@ Projeto desenvolvido por:
 - 👨‍💻 [Levi Vieira](https://github.com/LeviDeveloper-tech/)
 - 👨‍💻 [João Lucas](https://github.com/juaulucas)
 - 👨‍💻 [João Victor](https://github.com/DmRllJoao/)
-
+- 👨‍💻 [Júlio Henrique](https://github.com/JHOM6579/)
 
 ## 📜 Licença
 Este projeto está licenciado sob a [MIT License](LICENSE).  
