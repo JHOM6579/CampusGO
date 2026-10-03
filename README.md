@@ -53,6 +53,7 @@ Projeto desenvolvido por:
 - 👨‍💻 [João Lucas](https://github.com/juaulucas)
 - 👨‍💻 [João Victor](https://github.com/DmRllJoao/)
 - 👨‍💻 [Júlio Henrique](https://github.com/JHOM6579/)
+- 👨‍💻 [Luis Felipe](https://github.com/felipemaatias)
 
 ## 📜 Licença
 Este projeto está licenciado sob a [MIT License](LICENSE).  
