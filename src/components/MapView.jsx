@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
-import { mapData, calculateRoute, aulas } from "../utils/mockData";
+import { mapData, aulas } from "../utils/mockData";
+import { calculateRoute } from "../utils/routing";
 import PresencePopup from "./MapView/PresencePopup";
 import InfoPanel from "./MapView/InfoPanel";
 import SchedulePanel from "./MapView/SchedulePanel";
 import Sidebar from "./MapView/Sidebar";
 import Topbar from "./MapView/Topbar";
-import MapCanvas from "./MapView/MapCanvas";
+import CampusMapViewer from "./MapView/CampusMapViewer";
 import { descriptionNodes } from "../utils/descriptionNodes";
 
 import "./MapView.css";
@@ -19,7 +20,7 @@ export default function MapView({ user, mode, onLogout }) {
 
   const [zoom, setZoom] = useState(1);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const svgRef = useRef();
+
   const isPanning = useRef(false);
   const startPan = useRef({ x: 0, y: 0 });
 
@@ -32,10 +33,12 @@ export default function MapView({ user, mode, onLogout }) {
     }
   }, [mode, user]);
 
+  const [isAccessibleOnly, setIsAccessibleOnly] = useState(false); // Pode ser ligado a um botão no UI
+
   function requestRoute(destNode) {
     const origin = "n0"; // Ponto de partida fixo "Você está aqui"
-    const route = calculateRoute(mapData.nodes, mapData.edges, origin, destNode);
-    setPath(route);
+    const routeResult = calculateRoute(origin, destNode, isAccessibleOnly, mapData);
+    setPath(routeResult.path);
   }
 
   function handleWheel(e) {
@@ -89,14 +92,7 @@ export default function MapView({ user, mode, onLogout }) {
     };
   }, [onLogout]);
 
-  const nodes = Object.values(mapData.nodes);
-  const allX = nodes.map((n) => n.x);
-  const allY = nodes.map((n) => n.y);
-  const minX = Math.min(...allX) - 50;
-  const maxX = Math.max(...allX) + 50;
-  const minY = Math.min(...allY) - 50;
-  const maxY = Math.max(...allY) + 50;
-  const vb = `${minX} ${minY} ${maxX - minX} ${maxY - minY}`;
+
 
   return (
     <div className="map-container">
@@ -109,23 +105,27 @@ export default function MapView({ user, mode, onLogout }) {
       {/* TOPO */}
       <Topbar user={user} menuOpen={menuOpen} onLogout={onLogout} />
 
-      {/* MAPA */}
-      <MapCanvas
+      {/* MAPA — CampusMapViewer Premium */}
+      <CampusMapViewer
         nodes={mapData.nodes}
         edges={mapData.edges}
         path={path}
         selected={selected}
-        onSelectNode={(node) =>
-          setSelected({
-            ...node,
-            resumo: descriptionNodes[node.id] || "Local não mapeado",
-          })
-        }
-        viewBox={vb}
+        onSelectNode={(node) => {
+          if (selected?.id === node.id) {
+            setSelected(null);
+            setPath([]);
+          } else {
+            setSelected({
+              ...node,
+              resumo: descriptionNodes[node.id] || "Local não mapeado",
+            });
+            requestRoute(node.id);
+          }
+        }}
         offset={offset}
         zoom={zoom}
         isPanning={isPanning.current}
-        svgRef={svgRef}
         handleWheel={handleWheel}
         handleMouseDown={handleMouseDown}
         handleMouseMove={handleMouseMove}
@@ -149,7 +149,7 @@ export default function MapView({ user, mode, onLogout }) {
               }}
             />
           )}
-      </MapCanvas>
+      </CampusMapViewer>
 
       {/* POPUP DE PRESENÇA */}
       {showPresencePopup && (

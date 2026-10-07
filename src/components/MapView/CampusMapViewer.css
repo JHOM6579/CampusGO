@@ -1,0 +1,440 @@
+/* ============================================================
+   CampusMapViewer.css
+   Estilos premium do componente <CampusMapViewer />
+   ============================================================ */
+
+/* ── Wrapper do mapa ──────────────────────────────────────── */
+.campus-map-viewer {
+  flex: 1;
+  position: relative;
+  background: linear-gradient(135deg, #e8f0f6 0%, #dce7f0 50%, #e2ecf4 100%);
+  overflow: hidden;
+  user-select: none;
+  cursor: grab;
+  transition: margin-left 0.4s ease, filter 0.3s ease;
+  z-index: 10;
+}
+
+.campus-map-viewer:active {
+  cursor: grabbing;
+}
+
+.campus-map-viewer.shrink {
+  margin-left: 260px;
+  filter: brightness(0.95);
+}
+
+/* ── SVG base (planta-baixa) ──────────────────────────────── */
+.campus-map-viewer__blueprint {
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* ── Overlay SVG (nós, rota, pins) ─────────────────────────── */
+.campus-map-viewer__overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* ── Definição de gradientes e filtros SVG ─────────────────── */
+.campus-map-viewer__defs {
+  /* container only – estilos dos <filter> e <linearGradient> internos */
+}
+
+/* ============================================================
+   ROTA TRAÇADA
+   ============================================================ */
+
+/* Contorno mais largo (halo) */
+.campus-route__halo {
+  fill: none;
+  stroke: rgba(0, 184, 148, 0.2);
+  stroke-width: 14;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Linha principal da rota */
+.campus-route__line {
+  fill: none;
+  stroke: #00b894;
+  /* Solid color to fix gradient rendering bugs */
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 12 8;
+  animation: campus-route-flow 1.2s linear infinite;
+}
+
+@keyframes campus-route-flow {
+  from {
+    stroke-dashoffset: 40;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Seta animada ao longo da rota */
+.campus-route__arrow {
+  fill: #00b894;
+  filter: drop-shadow(0 0 3px rgba(0, 184, 148, 0.6));
+}
+
+/* ============================================================
+   PIN MARKERS — por categoria
+   ============================================================ */
+
+/* Base clicável do grupo do pin */
+.campus-pin {
+  cursor: pointer;
+  pointer-events: auto;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* .campus-pin:hover {
+  transform: scale(1.18);
+  filter: brightness(1.1);
+} */
+
+/* Sombra projetada do pin */
+.campus-pin__shadow {
+  fill: rgba(0, 0, 0, 0.18);
+  /* elipse posicionada inline */
+}
+
+/* Corpo do pin (drop shape) */
+.campus-pin__body {
+  transition: fill 0.3s ease;
+  filter: url(#pinDropShadow);
+}
+
+/* Ícone interno (circle branco) */
+.campus-pin__icon-bg {
+  fill: rgba(255, 255, 255, 0.92);
+}
+
+/* Texto do ícone (emoji ou letter) */
+.campus-pin__icon-text {
+  font-size: 10px;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+  font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+}
+
+/* ── Cores por Categoria ───────────────────────────────────── */
+.campus-pin--entrada .campus-pin__body {
+  fill: #3b82f6;
+}
+
+.campus-pin--elevador .campus-pin__body {
+  fill: #8b5cf6;
+}
+
+.campus-pin--banheiro .campus-pin__body {
+  fill: #06b6d4;
+}
+
+.campus-pin--auditorio .campus-pin__body {
+  fill: #f59e0b;
+}
+
+.campus-pin--biblioteca .campus-pin__body {
+  fill: #10b981;
+}
+
+.campus-pin--cantina .campus-pin__body {
+  fill: #ef4444;
+}
+
+.campus-pin--alimentacao .campus-pin__body {
+  fill: #f97316;
+}
+
+.campus-pin--social .campus-pin__body {
+  fill: #ec4899;
+}
+
+.campus-pin--bloco .campus-pin__body {
+  fill: #6366f1;
+}
+
+.campus-pin--igreja .campus-pin__body {
+  fill: #a855f7;
+}
+
+.campus-pin--estacionamento .campus-pin__body {
+  fill: #64748b;
+}
+
+.campus-pin--sala .campus-pin__body {
+  fill: #0ea5e9;
+}
+
+.campus-pin--default .campus-pin__body {
+  fill: #94a3b8;
+}
+
+/* ── Pin selecionado ───────────────────────────────────────── */
+.campus-pin--selected .campus-pin__body {
+  stroke: #ffffff;
+  stroke-width: 2.5;
+  filter: url(#pinDropShadow) drop-shadow(0 0 8px rgba(0, 184, 148, 0.7));
+}
+
+.campus-pin--selected {
+  transform: scale(1.15) translateY(-6px);
+}
+
+/* ============================================================
+   LABEL FLUTUANTE DOS PINS
+   ============================================================ */
+.campus-pin__label-bg {
+  fill: rgba(255, 255, 255, 0.92);
+  rx: 4;
+  ry: 4;
+  filter: url(#pinDropShadow);
+  /* transition: fill 0.2s ease; */
+}
+
+.campus-pin:hover .campus-pin__label-bg {
+  fill: #ffffff;
+}
+
+.campus-pin__label-text {
+  font-family: "Poppins", "Inter", system-ui, sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  fill: #1e293b;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.campus-pin--selected .campus-pin__label-text {
+  fill: #024221;
+  font-weight: 700;
+}
+
+/* ============================================================
+   "VOCÊ ESTÁ AQUI" — TOTEM NODE
+   ============================================================ */
+.campus-totem {
+  pointer-events: auto;
+  cursor: default;
+}
+
+/* Anel de pulso externo (onda 1) */
+.campus-totem__pulse-ring {
+  fill: none;
+  stroke: #00b894;
+  stroke-width: 2;
+  opacity: 0;
+  animation: campus-totem-pulse 2.4s ease-out infinite;
+}
+
+/* Anel de pulso (onda 2 — defasada) */
+.campus-totem__pulse-ring--delayed {
+  animation-delay: 0.8s;
+}
+
+/* Anel de pulso (onda 3 — defasada) */
+.campus-totem__pulse-ring--delayed2 {
+  animation-delay: 1.6s;
+}
+
+@keyframes campus-totem-pulse {
+  0% {
+    r: 8;
+    opacity: 0.7;
+    stroke-width: 3;
+  }
+
+  100% {
+    r: 28;
+    opacity: 0;
+    stroke-width: 0.5;
+  }
+}
+
+/* Disco preenchido com glow */
+.campus-totem__glow {
+  fill: rgba(0, 184, 148, 0.18);
+  animation: campus-totem-glow-breathe 3s ease-in-out infinite;
+}
+
+@keyframes campus-totem-glow-breathe {
+
+  0%,
+  100% {
+    r: 16;
+    opacity: 0.25;
+  }
+
+  50% {
+    r: 20;
+    opacity: 0.4;
+  }
+}
+
+/* Círculo central */
+.campus-totem__core {
+  fill: #00b894;
+  stroke: #ffffff;
+  stroke-width: 3;
+  filter: drop-shadow(0 0 6px rgba(0, 184, 148, 0.6));
+}
+
+/* Ponto interno branco */
+.campus-totem__dot {
+  fill: #ffffff;
+}
+
+/* Label "Você está aqui" */
+.campus-totem__label-bg {
+  fill: #024221;
+  rx: 6;
+  ry: 6;
+  filter: url(#pinDropShadow);
+}
+
+.campus-totem__label-text {
+  font-family: "Poppins", "Inter", system-ui, sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  fill: #ffffff;
+  text-anchor: middle;
+  pointer-events: none;
+  letter-spacing: 0.3px;
+}
+
+.campus-totem__label-arrow {
+  fill: #024221;
+}
+
+/* ============================================================
+   LEGENDA FLUTUANTE (TOOLTIP GLASSMORPHISM)
+   ============================================================ */
+.campus-legend {
+  position: absolute;
+  bottom: 20px;
+  left: 90px;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(16px) saturate(1.6);
+  -webkit-backdrop-filter: blur(16px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 14px;
+  padding: 14px 18px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  z-index: 800;
+  max-width: 200px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.campus-legend__title {
+  font-family: "Poppins", "Inter", system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: #024221;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.campus-legend__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.campus-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Poppins", "Inter", system-ui, sans-serif;
+  font-size: 11px;
+  color: #334155;
+  font-weight: 500;
+}
+
+.campus-legend__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================================
+   DESTINO MARKER (endpoint da rota)
+   ============================================================ */
+.campus-destination__ring {
+  fill: none;
+  stroke: #00b894;
+  stroke-width: 2;
+  stroke-dasharray: 4 3;
+  animation: campus-dest-rotate 8s linear infinite;
+}
+
+@keyframes campus-dest-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.campus-destination__flag {
+  fill: #00b894;
+  filter: drop-shadow(0 2px 4px rgba(0, 184, 148, 0.5));
+}
+
+/* ============================================================
+   RESPONSIVIDADE — QUIOSQUE (1080×1920 portrait)
+   ============================================================ */
+@media (max-width: 1100px) {
+  .campus-legend {
+    bottom: 12px;
+    left: 12px;
+    padding: 10px 14px;
+    max-width: 170px;
+  }
+
+  .campus-legend__title {
+    font-size: 10px;
+  }
+
+  .campus-legend__item {
+    font-size: 10px;
+  }
+
+  .campus-pin__label-text {
+    font-size: 8px;
+  }
+
+  .campus-totem__label-text {
+    font-size: 8px;
+  }
+}
+
+/* Touch-friendly para quiosque */
+@media (pointer: coarse) {
+  .campus-pin {
+    /* Zona de toque maior */
+    padding: 8px;
+  }
+
+  /* .campus-pin:hover {
+    transform: scale(1.12);
+  } */
+}
