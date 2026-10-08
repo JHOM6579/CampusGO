@@ -18,8 +18,8 @@ export default function MapView({ user, mode, onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showPresencePopup, setShowPresencePopup] = useState(false);
 
-  const [zoom, setZoom] = useState(1);
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(0.5);
+  const [offset, setOffset] = useState({ x: 0, y: -450 });
 
   const isPanning = useRef(false);
   const startPan = useRef({ x: 0, y: 0 });

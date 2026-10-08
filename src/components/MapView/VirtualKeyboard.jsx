@@ -47,7 +47,7 @@ export default function VirtualKeyboard({ value, onChange, onClose }) {
   return (
     <div
       ref={keyboardRef}
-      className="fixed bottom-[40px] left-1/2 transform -translate-x-1/2 w-full max-w-[900px] bg-white/95 backdrop-blur-lg rounded-2xl p-6 shadow-[0_20px_60px_rgba(0,0,0,0.3)] border border-gray-300 z-[2000] transition-opacity duration-300"
+      className="fixed bottom-[-820px] left-1/2 transform -translate-x-1/2 w-full max-w-[900px] bg-white/95 backdrop-blur-lg rounded-2xl p-6 shadow-[0_20px_60px_rgba(0,0,0,0.3)] border border-gray-300 z-[2000] transition-opacity duration-300"
     >
       <div className="flex flex-col gap-3">
         {QWERTY_LAYOUT.map((row, rowIndex) => (
