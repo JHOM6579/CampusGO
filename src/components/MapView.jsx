@@ -18,17 +18,15 @@ export default function MapView({ user, mode, onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showPresencePopup, setShowPresencePopup] = useState(false);
 
-  const [zoom, setZoom] = useState(0.5);
-  const [offset, setOffset] = useState({ x: 0, y: -450 });
+  const [zoom, setZoom] = useState(0.7);
+  const [offset, setOffset] = useState({ x: +300, y: +40 });
 
   const isPanning = useRef(false);
   const startPan = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     if (mode === "student" && user?.matricula) {
-      const aulasDoAluno = aulas.filter((aula) =>
-        aula.matriculas?.includes(user.matricula)
-      );
+      const aulasDoAluno = aulas.filter((aula) => aula.matriculas?.includes(user.matricula));
       setStudentSchedule(aulasDoAluno);
     }
   }, [mode, user]);
@@ -92,15 +90,10 @@ export default function MapView({ user, mode, onLogout }) {
     };
   }, [onLogout]);
 
-
-
   return (
     <div className="map-container">
       {/* MENU LATERAL */}
-      <Sidebar
-        menuOpen={menuOpen}
-        toggleMenu={() => setMenuOpen(!menuOpen)}
-      />
+      <Sidebar menuOpen={menuOpen} toggleMenu={() => setMenuOpen(!menuOpen)} />
 
       {/* TOPO */}
       <Topbar user={user} menuOpen={menuOpen} onLogout={onLogout} />
@@ -135,29 +128,23 @@ export default function MapView({ user, mode, onLogout }) {
         <InfoPanel selected={selected} onRequestRoute={requestRoute} path={path} onCancelRoute={() => setPath([])} />
 
         {/* CRONOGRAMA */}
-        {mode === "student" &&
-          studentSchedule && studentSchedule.length > 0 && (
-            <SchedulePanel
-              schedule={studentSchedule}
-              onSelectSala={(id, name) => {
-                setSelected({
-                  id,
-                  name,
-                  resumo: descriptionNodes[id] || "Local não mapeado",
-                });
-                requestRoute(id);
-              }}
-            />
-          )}
+        {mode === "student" && studentSchedule && studentSchedule.length > 0 && (
+          <SchedulePanel
+            schedule={studentSchedule}
+            onSelectSala={(id, name) => {
+              setSelected({
+                id,
+                name,
+                resumo: descriptionNodes[id] || "Local não mapeado",
+              });
+              requestRoute(id);
+            }}
+          />
+        )}
       </CampusMapViewer>
 
       {/* POPUP DE PRESENÇA */}
-      {showPresencePopup && (
-        <PresencePopup
-          onStay={() => setShowPresencePopup(false)}
-          onLogout={onLogout}
-        />
-      )}
+      {showPresencePopup && <PresencePopup onStay={() => setShowPresencePopup(false)} onLogout={onLogout} />}
     </div>
   );
 }

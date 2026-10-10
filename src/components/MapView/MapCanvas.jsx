@@ -1,6 +1,6 @@
 import React from "react";
 import "../MapView.css";
-import MapSVG from "../assets/map.svg?react"
+import MapSVG from "../assets/CampusGoMap.svg?react";
 import TextLabelDestination from "./TextLabelDestination";
 
 export default function MapCanvas({
@@ -15,7 +15,7 @@ export default function MapCanvas({
   handleMouseDown,
   handleMouseMove,
   handleMouseUp,
-  children 
+  children,
 }) {
   return (
     <div
@@ -29,23 +29,24 @@ export default function MapCanvas({
       <MapSVG
         className="map-svg"
         style={{
-          width: "100%", height: "auto",
+          width: "100%",
+          height: "auto",
           transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
-          transformOrigin: "center center",
+          transformOrigin: "top left",
           transition: isPanning ? "none" : "transform 0.1s ease",
         }}
       />
 
       {/* Overlay SVG para rota e nós clicáveis */}
       <svg
-        viewBox="0 0 810 810"  // Ajuste conforme o tamanho real do mapa
+        viewBox="0 0 1289 810" // Ajuste conforme o tamanho real do mapa
         className="map-svg"
         style={{
           position: "absolute",
           inset: 0,
           width: "100%",
           height: "auto",
-          pointerEvents: "none",       // por padrão não intercepta eventos
+          pointerEvents: "none", // por padrão não intercepta eventos
           transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
           transformOrigin: "center center",
           transition: isPanning ? "none" : "transform 0.1s ease",
@@ -64,27 +65,27 @@ export default function MapCanvas({
 
         {/* Nós clicáveis: círculo + texto */}
         {/* Primeiro: renderiza os invisíveis */}
-          {nodes &&
-  Object.values(nodes)
-    .filter((node) => !!node.name)
-    .map((node) => (
-      <g
-        key={node.id}
-        className={`text-node ${selected?.id === node.id ? "selected" : ""}`}
-        transform={`translate(${node.x}, ${node.y})`}
-        style={{ cursor: "pointer", pointerEvents: "auto" }}
-        onClick={() => onSelectNode(node)}
-      >
-        <TextLabelDestination
-          text={node.name}
-          onClick={(e) => {
-            e.stopPropagation();
-            onSelectNode(node);
-          }}
-        />
-      </g>
-    ))}
-        </svg>
+        {nodes &&
+          Object.values(nodes)
+            .filter((node) => !!node.name)
+            .map((node) => (
+              <g
+                key={node.id}
+                className={`text-node ${selected?.id === node.id ? "selected" : ""}`}
+                transform={`translate(${node.x}, ${node.y})`}
+                style={{ cursor: "pointer", pointerEvents: "auto" }}
+                onClick={() => onSelectNode(node)}
+              >
+                <TextLabelDestination
+                  text={node.name}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onSelectNode(node);
+                  }}
+                />
+              </g>
+            ))}
+      </svg>
       {/* Renderiza os painéis filhos (InfoPanel, SchedulePanel, etc.) */}
       {children}
     </div>
