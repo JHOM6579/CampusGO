@@ -1,0 +1,15 @@
+# Dependências
+node_modules/
+
+# Arquivos gerados pelo build
+dist/
+
+# Arquivos locais e configurações
+.env
+.env.*
+!.env.example
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
