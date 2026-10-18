@@ -1,8 +1,11 @@
-// src/components/MapView/Topbar.jsx
-import React from "react";
+import React, { useState, useRef } from "react";
+import VirtualKeyboard from "./VirtualKeyboard";
 import "../MapView.css";
 
 export default function Topbar({ user, menuOpen, onLogout }) {
+  const [searchValue, setSearchValue] = useState("");
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+
   return (
     <header className={`topbar ${menuOpen ? "shifted" : ""}`}>
       <div className="topbar-content">
@@ -14,6 +17,10 @@ export default function Topbar({ user, menuOpen, onLogout }) {
           <input
             type="text"
             placeholder="Pesquise o local que você procura..."
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onFocus={() => setIsKeyboardOpen(true)}
+            onClick={() => setIsKeyboardOpen(true)}
           />
           <button>🔍</button>
         </div>
@@ -21,6 +28,14 @@ export default function Topbar({ user, menuOpen, onLogout }) {
           🚪 Sair
         </button>
       </div>
+
+      {isKeyboardOpen && (
+        <VirtualKeyboard
+          value={searchValue}
+          onChange={setSearchValue}
+          onClose={() => setIsKeyboardOpen(false)}
+        />
+      )}
     </header>
   );
 }

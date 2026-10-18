@@ -123,11 +123,7 @@ export default function App() {
                 loading={loading}
               />
             ) : mode === "student" || mode === "visitor" ? (
-              <div className="container">
-                <main className="main">
-                  <MapView user={user} mode={mode} onLogout={handleLogout} />
-                </main>
-              </div>
+              <MapView user={user} mode={mode} onLogout={handleLogout} />
             ) : mode === "admin" ? (
               <Navigate to="/admin" />
             ) : (

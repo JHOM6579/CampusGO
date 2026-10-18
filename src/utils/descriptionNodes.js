@@ -13,6 +13,10 @@ export const descriptionNodes = {
   n9: "Bloco B",
   n10: "Igreja Bom Pastor",
   n11: "Bloco B - Estacionamento",
+  n12: "Área verde do campus - Bloco B",
+  n13: "Pós-graduação Unifametro",
+  n14: "Banheiros - Bloco B (Térreo)",
+  n15: "Elevadores - Bloco B (Térreo)",
 
 //Descrição das salas
  sA1: "Bloco A - 5° andar \n\n(Pegue o elevador para o 5° andar)",
