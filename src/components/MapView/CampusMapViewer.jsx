@@ -29,6 +29,10 @@ const NODE_CATEGORIES = {
   n9: { category: "bloco", icon: "🏢", label: "Blocos" },
   n10: { category: "igreja", icon: "⛪", label: "Igreja" },
   n11: { category: "estacionamento", icon: "🅿️", label: "Estacionamento" },
+  n12: { category: "area-verde", icon: "🌿", label: "Área verde" },
+  n13: { category: "pos", icon: "🎓", label: "Pós-graduação" },
+  n14: { category: "banheiro", icon: "🚻", label: "Banheiros" },
+  n15: { category: "elevador", icon: "🛗", label: "Elevadores" },
   sA1: { category: "sala", icon: "🏫", label: "Salas" },
   sB1: { category: "sala", icon: "🏫", label: "Salas" },
 };
@@ -46,6 +50,8 @@ const CATEGORY_COLORS = {
   bloco: "#6366f1",
   igreja: "#a855f7",
   estacionamento: "#64748b",
+  "area-verde": "#22c55e",
+  pos: "#0f766e",
   sala: "#0ea5e9",
   default: "#94a3b8",
 };

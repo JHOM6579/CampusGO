@@ -170,6 +170,14 @@
   fill: #64748b;
 }
 
+.campus-pin--area-verde .campus-pin__body {
+  fill: #22c55e;
+}
+
+.campus-pin--pos .campus-pin__body {
+  fill: #0f766e;
+}
+
 .campus-pin--sala .campus-pin__body {
   fill: #0ea5e9;
 }

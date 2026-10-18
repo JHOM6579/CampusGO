@@ -50,6 +50,10 @@ export const mapData = {
     n9: { id: "n9", name: "Bloco B", x: 759, y: 360 },
     n10: { id: "n10", name: "Igreja Bom Pastor", x: 450, y: 680 },
     n11: { id: "n11", name: "Estacionamento B", x: 610, y: 750 },
+    n12: { id: "n12", name: "Espaço verde", x:1027, y:160 },
+    n13: { id: "n13", name: "Pós Unifametro", x:855, y: 320 },
+    n14: { id: "n14", name: "Banheiros", x:1145, y: 540 },
+    n15: { id: "n15", name: "Elevadores", x:910, y: 550 },
 
     // Pontos Salas 'Ilusórias'
     sA1: { id: "sA1", x: 170, y: 120 },
@@ -69,6 +73,18 @@ export const mapData = {
     x8: { id: "x8", x: 605, y: 600 },
     x9: { id: "x9", x: 605, y: 785 },
     x10: { id: "x10", x: 450, y: 785 },
+    x11: { id: "x11", x: 855, y: 360 },
+    x12: { id: "x12", x: 865, y: 348 },
+    x13: { id: "x13", x: 1064, y: 348 },
+    x14: { id: "x14", x: 1064, y: 292 },
+    x15: { id: "x15", x: 1136, y: 292 },
+    x16: { id: "x16", x: 1136, y: 160 },
+    x17: { id: "x17", x: 855, y:280 },
+    x18: { id: "x18", x: 930, y: 280 },
+    x19: { id: "x19", x: 930, y: 160 },
+    x20: { id: "x20", x: 855, y: 605 },
+    x21: { id: "x21", x: 910, y: 605 },
+    x22: { id: "x22", x: 1146, y: 605 },
   },
   edges: [
     // =======Rota para a entrada principal=======
@@ -149,6 +165,30 @@ export const mapData = {
     { from: "x8", to: "x9", w: 130 }, //x8 -> x9
     { from: "x9", to: "x10", w: 130 }, //x9 -> x10
     { from: "x10", to: "n10", w: 130 }, //x10 -> Igreja Bom pastor
+
+    //=======Rotas para o Pós unifametro=======
+    { from: "n9", to: "x11", w: 106 },
+    { from: "x11", to: "n13", w: 41 },
+    
+
+    //=======Rota para o espaço verde=======
+    { from: "n9", to: "x11", w: 106 },
+    { from: "x11", to: "x17", w: 106 },
+    { from: "x17", to: "x18", w: 106 },
+    { from: "x18", to: "x19", w: 106 },
+    { from: "x19", to: "n12", w: 41 },
+
+    //=======Rota para os elevadores =======
+    { from: "x11", to: "x20", w: 202 },
+    { from: "x20", to: "x21", w: 202 },
+    { from: "x21", to: "n15", w: 202 },
+
+    //=======Rota para os elevadores =======
+    { from: "x11", to: "x20", w: 202 },
+    { from: "x20", to: "x21", w: 202 },
+    { from: "x21", to: "x22", w: 202 },
+    { from: "x22", to: "n14", w: 202 },
+
   ],
 };
 
