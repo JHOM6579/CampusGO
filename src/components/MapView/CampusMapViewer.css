@@ -9,6 +9,10 @@
   position: relative;
   background: linear-gradient(135deg, #e8f0f6 0%, #dce7f0 50%, #e2ecf4 100%);
   overflow: hidden;
+  margin: 100px 28px 28px 100px;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  box-shadow: 0 18px 48px rgba(17, 48, 35, 0.16), inset 0 0 0 1px rgba(11, 66, 42, 0.06);
   user-select: none;
   cursor: grab;
   transition: margin-left 0.4s ease, filter 0.3s ease;
@@ -22,6 +26,12 @@
 .campus-map-viewer.shrink {
   margin-left: 260px;
   filter: brightness(0.95);
+}
+
+.campus-map-stage {
+  position: absolute;
+  inset: 0 270px 0 0;
+  overflow: hidden;
 }
 
 /* ── SVG base (planta-baixa) ──────────────────────────────── */
@@ -322,24 +332,27 @@
 }
 
 /* ============================================================
-   LEGENDA FLUTUANTE (TOOLTIP GLASSMORPHISM)
+   LEGENDA LATERAL
    ============================================================ */
 .campus-legend {
   position: absolute;
-  bottom: 20px;
-  left: 90px;
-  background: rgba(255, 255, 255, 0.72);
+  top: 43%;
+  right: 16px;
+  transform: translateY(-50%);
+  width: 230px;
+  max-height: calc(100% - 32px);
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(16px) saturate(1.6);
   -webkit-backdrop-filter: blur(16px) saturate(1.6);
   border: 1px solid rgba(255, 255, 255, 0.45);
   border-radius: 14px;
-  padding: 25px 25px;
+  padding: 18px 16px;
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.5);
   z-index: 800;
-  max-width: 200px;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  scrollbar-width: thin;
 }
 
 .campus-legend__title {
@@ -405,11 +418,20 @@
    RESPONSIVIDADE — QUIOSQUE (1080×1920 portrait)
    ============================================================ */
 @media (max-width: 1100px) {
+  .campus-map-stage {
+    right: 220px;
+  }
+
   .campus-legend {
-    bottom: 12px;
-    left: 12px;
-    padding: 10px 14px;
-    max-width: 170px;
+    right: 12px;
+    width: 190px;
+    padding: 12px;
+  }
+
+  .campus-map-viewer .info-panel {
+    right: 12px;
+    width: 190px;
+    max-width: calc(100% - 24px);
   }
 
   .campus-legend__title {
@@ -426,6 +448,43 @@
 
   .campus-totem__label-text {
     font-size: 8px;
+  }
+}
+
+@media (max-width: 600px) {
+  .campus-map-viewer {
+    margin: 88px 16px 16px 92px;
+    border-radius: 16px;
+  }
+
+  .campus-map-stage {
+    inset: 0 0 168px;
+  }
+
+  .campus-legend {
+    top: auto;
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+    width: auto;
+    max-height: 144px;
+    padding: 10px 12px;
+    transform: none;
+  }
+
+  .campus-legend__list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px 10px;
+  }
+
+  .campus-map-viewer .info-panel {
+    top: 12px;
+    bottom: auto;
+    right: 12px;
+    left: auto;
+    width: 190px;
+    max-width: calc(100% - 24px);
   }
 }
 

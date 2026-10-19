@@ -205,7 +205,11 @@ function Legend({ nodes }) {
   }, [nodes]);
 
   return (
-    <div className="campus-legend">
+    <div
+      className="campus-legend"
+      onMouseDown={(event) => event.stopPropagation()}
+      onWheel={(event) => event.stopPropagation()}
+    >
       <div className="campus-legend__title">Legenda</div>
       <ul className="campus-legend__list">
         {/* Totem sempre primeiro */}
@@ -235,6 +239,7 @@ export default function CampusMapViewer({
   onSelectNode,
   offset,
   zoom,
+  viewerRef,
   isPanning,
   handleWheel,
   handleMouseDown,
@@ -260,43 +265,46 @@ export default function CampusMapViewer({
   return (
     <div
       className="campus-map-viewer"
+      ref={viewerRef}
       onWheel={handleWheel}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
     >
-      {/* ─── Planta baixa SVG ───────────────────────────────── */}
-      <MapSVG className="campus-map-viewer__blueprint" style={{ ...transformStyle, width: "100%", height: "auto" }} />
+      <div className="campus-map-stage">
+        {/* ─── Planta baixa SVG ───────────────────────────────── */}
+        <MapSVG className="campus-map-viewer__blueprint" style={{ ...transformStyle, width: "100%", height: "auto" }} />
 
-      {/* ─── Overlay SVG (nós + rota) ───────────────────────── */}
-      <svg viewBox={SVG_VIEWBOX} className="campus-map-viewer__overlay" style={transformStyle}>
-        {/* Definições reutilizáveis: gradientes, filtros, etc. */}
-        <defs className="campus-map-viewer__defs">
-          {/* Gradiente da rota */}
-          <linearGradient id="campusRouteGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#00b894" />
-            <stop offset="50%" stopColor="#00d2a0" />
-            <stop offset="100%" stopColor="#55efc4" />
-          </linearGradient>
+        {/* ─── Overlay SVG (nós + rota) ───────────────────────── */}
+        <svg viewBox={SVG_VIEWBOX} className="campus-map-viewer__overlay" style={transformStyle}>
+          {/* Definições reutilizáveis: gradientes, filtros, etc. */}
+          <defs className="campus-map-viewer__defs">
+            {/* Gradiente da rota */}
+            <linearGradient id="campusRouteGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#00b894" />
+              <stop offset="50%" stopColor="#00d2a0" />
+              <stop offset="100%" stopColor="#55efc4" />
+            </linearGradient>
 
-          {/* Sombra dos pins */}
-          <filter id="pinDropShadow" x="-30%" y="-30%" width="160%" height="160%">
-            <feDropShadow dx="0" dy="1.5" stdDeviation="2" floodColor="rgba(0,0,0,0.18)" />
-          </filter>
-        </defs>
+            {/* Sombra dos pins */}
+            <filter id="pinDropShadow" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="1.5" stdDeviation="2" floodColor="rgba(0,0,0,0.18)" />
+            </filter>
+          </defs>
 
-        {/* ─── Rota animada (renderizada abaixo dos pins) ───── */}
-        <RoutePath path={path} nodes={nodes} />
+          {/* ─── Rota animada (renderizada abaixo dos pins) ───── */}
+          <RoutePath path={path} nodes={nodes} />
 
-        {/* ─── Pins dos POIs (categorias) ───────────────────── */}
-        {visiblePins.map((node) => (
-          <PinMarker key={node.id} node={node} isSelected={selected?.id === node.id} onClick={onSelectNode} />
-        ))}
+          {/* ─── Pins dos POIs (categorias) ───────────────────── */}
+          {visiblePins.map((node) => (
+            <PinMarker key={node.id} node={node} isSelected={selected?.id === node.id} onClick={onSelectNode} />
+          ))}
 
-        {/* ─── Totem "Você está aqui" (sempre por cima) ─────── */}
-        {totemNode && <TotemMarker node={totemNode} />}
-      </svg>
+          {/* ─── Totem "Você está aqui" (sempre por cima) ─────── */}
+          {totemNode && <TotemMarker node={totemNode} />}
+        </svg>
+      </div>
 
       {/* ─── Legenda glassmorphism ──────────────────────────── */}
       <Legend nodes={nodes} />
