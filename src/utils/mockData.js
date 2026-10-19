@@ -50,10 +50,10 @@ export const mapData = {
     n9: { id: "n9", name: "Bloco B", x: 759, y: 360 },
     n10: { id: "n10", name: "Igreja Bom Pastor", x: 450, y: 680 },
     n11: { id: "n11", name: "Estacionamento B", x: 610, y: 750 },
-    n12: { id: "n12", name: "Espaço verde", x:1027, y:160 },
-    n13: { id: "n13", name: "Pós Unifametro", x:855, y: 320 },
-    n14: { id: "n14", name: "Banheiros", x:1145, y: 540 },
-    n15: { id: "n15", name: "Elevadores", x:910, y: 550 },
+    n12: { id: "n12", name: "Espaço verde", x: 1027, y: 160 },
+    n13: { id: "n13", name: "Pós Unifametro", x: 855, y: 320 },
+    n14: { id: "n14", name: "Banheiros", x: 1145, y: 540 },
+    n15: { id: "n15", name: "Elevadores", x: 910, y: 550 },
 
     // Pontos Salas 'Ilusórias'
     sA1: { id: "sA1", x: 170, y: 120 },
@@ -79,7 +79,7 @@ export const mapData = {
     x14: { id: "x14", x: 1064, y: 292 },
     x15: { id: "x15", x: 1136, y: 292 },
     x16: { id: "x16", x: 1136, y: 160 },
-    x17: { id: "x17", x: 855, y:280 },
+    x17: { id: "x17", x: 855, y: 280 },
     x18: { id: "x18", x: 930, y: 280 },
     x19: { id: "x19", x: 930, y: 160 },
     x20: { id: "x20", x: 855, y: 605 },
@@ -169,7 +169,7 @@ export const mapData = {
     //=======Rotas para o Pós unifametro=======
     { from: "n9", to: "x11", w: 106 },
     { from: "x11", to: "n13", w: 41 },
-    
+
 
     //=======Rota para o espaço verde=======
     { from: "n9", to: "x11", w: 106 },
@@ -189,6 +189,34 @@ export const mapData = {
     { from: "x21", to: "x22", w: 202 },
     { from: "x22", to: "n14", w: 202 },
 
+  ],
+};
+
+export const mapData4Andar = {
+  nodes: {
+    n0: { id: "n0", name: "Elevador 4° andar - Ponto de Partida", x: 130, y: 100 },
+    s404: { id: "s404", name: "Sala 404", x: 527, y: 61 },
+  },
+  edges: [
+    //=======Rota para a sala 404=======
+    { from: "n0", to: "s404", w: 210 },
+  ],
+};
+
+export const mapData7Andar = {
+  nodes: {
+    n0: { id: "n0", name: "Elevador 7° andar - Ponto de Partida", x: 130, y: 100 },
+    rec7: { id: "rec7", name: "Recepcao", x: 235, y: 190 },
+
+    //Curvas invisíveis - Rota para a recepcao
+    x1: { id: "x1", x: 130, y: 150 },
+    x2: { id: "x2", x: 235, y: 150 },
+  },
+  edges: [
+    //=======Rota para a recepcao=======
+    { from: "n0", to: "x1", w: 130 },
+    { from: "x1", to: "x2", w: 130 },
+    { from: "x2", to: "rec7", w: 130 },
   ],
 };
 
