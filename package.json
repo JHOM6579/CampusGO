@@ -15,11 +15,12 @@
     "react-router-dom": "^7.9.5"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^5.1.1",
-    "baseline-browser-mapping": "^2.10.29",
-    "vite": "^8.0.12",
+    "@babel/core": "^7.29.7",
     "@tailwindcss/vite": "^4.0.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "baseline-browser-mapping": "^2.10.29",
     "tailwindcss": "^4.0.0",
+    "vite": "^8.0.12",
     "vite-plugin-svgr": "^4.5.0"
   }
 }
