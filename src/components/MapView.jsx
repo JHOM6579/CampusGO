@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { mapData, aulas } from "../utils/mockData";
 import { calculateRoute } from "../utils/routing";
-import PresencePopup from "./MapView/PresencePopup";
+// import PresencePopup from "./MapView/PresencePopup";
 import InfoPanel from "./MapView/InfoPanel";
 import SchedulePanel from "./MapView/SchedulePanel";
 import Sidebar from "./MapView/Sidebar";
@@ -16,13 +16,65 @@ export default function MapView({ user, mode, onLogout }) {
   const [path, setPath] = useState([]);
   const [studentSchedule, setStudentSchedule] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [showPresencePopup, setShowPresencePopup] = useState(false);
+  // const [showPresencePopup, setShowPresencePopup] = useState(false);
 
   const [zoom, setZoom] = useState(0.7);
   const [offset, setOffset] = useState({ x: +300, y: +40 });
 
+  const viewerRef = useRef(null);
+  const zoomRef = useRef(zoom);
+  zoomRef.current = zoom;
+
   const isPanning = useRef(false);
   const startPan = useRef({ x: 0, y: 0 });
+
+  function clampMapOffset(nextOffset, nextZoom) {
+    const viewer = viewerRef.current;
+    const viewport = viewer?.querySelector(".campus-map-stage");
+    const map = viewer?.querySelector(".campus-map-viewer__blueprint");
+
+    if (!viewport || !map) return nextOffset;
+
+    const viewportWidth = viewport.clientWidth;
+    const viewportHeight = viewport.clientHeight;
+    const mapBounds = map.getBoundingClientRect();
+    const mapWidth = mapBounds.width / zoomRef.current;
+    const mapHeight = mapBounds.height / zoomRef.current;
+    const edgeGutter = 24;
+
+    const clampAxis = (value, viewportSize, mapSize) => {
+      const scaledSize = mapSize * nextZoom;
+      if (scaledSize + edgeGutter * 2 <= viewportSize) {
+        return (viewportSize - scaledSize) / 2;
+      }
+
+      return Math.min(
+        edgeGutter,
+        Math.max(viewportSize - scaledSize - edgeGutter, value),
+      );
+    };
+
+    return {
+      x: clampAxis(nextOffset.x, viewportWidth, mapWidth),
+      y: clampAxis(nextOffset.y, viewportHeight, mapHeight),
+    };
+  }
+
+  useEffect(() => {
+    const viewer = viewerRef.current;
+    const viewport = viewer?.querySelector(".campus-map-stage");
+    if (!viewport) return undefined;
+
+    const constrainMap = () => {
+      setOffset((current) => clampMapOffset(current, zoomRef.current));
+    };
+    const observer = new ResizeObserver(constrainMap);
+
+    observer.observe(viewport);
+    constrainMap();
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (mode === "student" && user?.matricula) {
@@ -42,7 +94,9 @@ export default function MapView({ user, mode, onLogout }) {
   function handleWheel(e) {
     e.preventDefault();
     const delta = -e.deltaY * 0.001;
-    setZoom((z) => Math.min(Math.max(0.35, z + delta), 3));
+    const nextZoom = Math.min(Math.max(0.79, zoom + delta), 3);
+    setZoom(nextZoom);
+    setOffset((current) => clampMapOffset(current, nextZoom));
   }
 
   function handleMouseDown(e) {
@@ -52,16 +106,22 @@ export default function MapView({ user, mode, onLogout }) {
 
   function handleMouseMove(e) {
     if (!isPanning.current) return;
-    setOffset({
-      x: e.clientX - startPan.current.x,
-      y: e.clientY - startPan.current.y,
-    });
+    setOffset(
+      clampMapOffset(
+        {
+          x: e.clientX - startPan.current.x,
+          y: e.clientY - startPan.current.y,
+        },
+        zoomRef.current,
+      ),
+    );
   }
 
   function handleMouseUp() {
     isPanning.current = false;
   }
 
+  /*
   useEffect(() => {
     let inactivityTimer;
     let warningTimer;
@@ -89,6 +149,7 @@ export default function MapView({ user, mode, onLogout }) {
       clearTimeout(warningTimer);
     };
   }, [onLogout]);
+  */
 
   return (
     <div className="map-container">
@@ -118,6 +179,7 @@ export default function MapView({ user, mode, onLogout }) {
         }}
         offset={offset}
         zoom={zoom}
+        viewerRef={viewerRef}
         isPanning={isPanning.current}
         handleWheel={handleWheel}
         handleMouseDown={handleMouseDown}
@@ -143,8 +205,7 @@ export default function MapView({ user, mode, onLogout }) {
         )}
       </CampusMapViewer>
 
-      {/* POPUP DE PRESENÇA */}
-      {showPresencePopup && <PresencePopup onStay={() => setShowPresencePopup(false)} onLogout={onLogout} />}
+      {/* {showPresencePopup && <PresencePopup onStay={() => setShowPresencePopup(false)} onLogout={onLogout} />} */}
     </div>
   );
 }
