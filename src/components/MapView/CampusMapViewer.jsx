@@ -36,12 +36,11 @@ const NODE_CATEGORIES = {
   n13: { category: "pos", icon: "🎓", label: "Pós-graduação" },
   n14: { category: "banheiro", icon: "🚻", label: "Banheiros" },
   n15: { category: "elevador", icon: "🛗", label: "Elevadores" },
-  sA1: { category: "sala", icon: "🏫", label: "Salas" },
-  sB1: { category: "sala", icon: "🏫", label: "Salas" },
-  // 4 Andar
-  s404: { category: "sala", icon: "🏫", label: "Salas" },
-  // 7 Andar
-  rec7: { category: "social", icon: "💼", label: "Recepção" },
+  n16: { category: "social", icon: "🛎️", label: "Recepção" },
+  n17: { category: "coordenacao", icon: "🏛️", label: "Coordenação" },
+  n18: { category: "secretaria", icon: "📄", label: "Secretaria" },
+  sA1: { category: "sala", icon: "📚", label: "Salas" },
+  sB1: { category: "sala", icon: "📚", label: "Salas" },
 };
 
 // Cores da legenda (precisa casar com o CSS)

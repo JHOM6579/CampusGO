@@ -195,28 +195,55 @@ export const mapData = {
 export const mapData4Andar = {
   nodes: {
     n0: { id: "n0", name: "Elevador 4° andar - Ponto de Partida", x: 130, y: 100 },
-    s404: { id: "s404", name: "Sala 404", x: 527, y: 61 },
+    n3: { id: "n3", name: "Banheiros", x: 315, y: 100 },
+    sB1: { id: "sB1", name: "Sala 404", x: 527, y: 220 },
+
+    //Pontos curvas invisíveis
+    x1: { id: "x1", x: 130, y: 150 },
+    x2: { id: "x2", x: 315, y: 150 },
   },
   edges: [
-    //=======Rota para a sala 404=======
-    { from: "n0", to: "s404", w: 210 },
+    //=======Rota para os banheiros=======
+    { from: "n0", to: "x1", w: 130 },
+    { from: "x1", to: "x2", w: 130 },
+    { from: "x2", to: "n3", w: 130 },
   ],
 };
 
 export const mapData7Andar = {
   nodes: {
     n0: { id: "n0", name: "Elevador 7° andar - Ponto de Partida", x: 130, y: 100 },
-    rec7: { id: "rec7", name: "Recepcao", x: 235, y: 190 },
+    n3: { id: "n3", name: "Banheiros", x: 315, y: 100 },
+    n16: { id: "n16", name: "Recepcao", x: 235, y: 190 },
+    n17: { id: "n17", name: "Coordenação - Projeto Extensão", x: 235, y: 590 },
 
-    //Curvas invisíveis - Rota para a recepcao
+    //Pontos curvas invisíveis
     x1: { id: "x1", x: 130, y: 150 },
-    x2: { id: "x2", x: 235, y: 150 },
+    x2: { id: "x2", x: 315, y: 150 },
+    x3: { id: "x3", x: 235, y: 150 },
+    x4: { id: "x4", x: 154, y: 150 },
+    x5: { id: "x5", x: 154, y: 569 },
+    x6: { id: "x6", x: 235, y: 569 },
+
   },
   edges: [
-    //=======Rota para a recepcao=======
+    //=======Rota para os banheiros=======
     { from: "n0", to: "x1", w: 130 },
     { from: "x1", to: "x2", w: 130 },
-    { from: "x2", to: "rec7", w: 130 },
+    { from: "x2", to: "n3", w: 130 },
+
+    //=======Rota para a recepcao=======
+    { from: "n0", to: "x1", w: 130 },
+    { from: "x1", to: "x3", w: 130 },
+    { from: "x3", to: "n16", w: 130 },
+
+    //=======Rota para a coordenacao=======
+    { from: "n0", to: "x1", w: 130 },
+    { from: "x1", to: "x4", w: 130 },
+    { from: "x4", to: "x5", w: 130 },
+    { from: "x5", to: "x6", w: 130 },
+    { from: "x6", to: "n17", w: 130 },
+
   ],
 };
 
