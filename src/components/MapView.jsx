@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { mapData, aulas } from "../utils/mockData";
+import { mapData, mapData4Andar, mapData7Andar, aulas } from "../utils/mockData";
 import { calculateRoute } from "../utils/routing";
 // import PresencePopup from "./MapView/PresencePopup";
 import InfoPanel from "./MapView/InfoPanel";
@@ -16,6 +16,7 @@ export default function MapView({ user, mode, onLogout }) {
   const [path, setPath] = useState([]);
   const [studentSchedule, setStudentSchedule] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [currentFloor, setCurrentFloor] = useState("terreo");
   // const [showPresencePopup, setShowPresencePopup] = useState(false);
 
   const [zoom, setZoom] = useState(0.7);
@@ -87,7 +88,8 @@ export default function MapView({ user, mode, onLogout }) {
 
   function requestRoute(destNode) {
     const origin = "n0"; // Ponto de partida fixo "Você está aqui"
-    const routeResult = calculateRoute(origin, destNode, isAccessibleOnly, mapData);
+    const currentData = currentFloor === "4" ? mapData4Andar : currentFloor === "7" ? mapData7Andar : mapData;
+    const routeResult = calculateRoute(origin, destNode, isAccessibleOnly, currentData);
     setPath(routeResult.path);
   }
 
@@ -154,13 +156,24 @@ export default function MapView({ user, mode, onLogout }) {
   return (
     <div className="map-container">
       {/* MENU LATERAL */}
-      <Sidebar menuOpen={menuOpen} toggleMenu={() => setMenuOpen(!menuOpen)} />
+      <Sidebar
+        menuOpen={menuOpen}
+        toggleMenu={() => setMenuOpen(!menuOpen)}
+        currentFloor={currentFloor}
+        onSelectFloor={(floor) => {
+          setCurrentFloor(floor);
+          setSelected(null);
+          setPath([]);
+        }}
+      />
 
       {/* TOPO */}
       <Topbar user={user} menuOpen={menuOpen} onLogout={onLogout} />
 
       {/* MAPA — CampusMapViewer Premium */}
       <CampusMapViewer
+        currentFloor={currentFloor}
+        onResetFloor={() => setCurrentFloor("terreo")}
         nodes={mapData.nodes}
         edges={mapData.edges}
         path={path}

@@ -8,7 +8,10 @@
 
 import React, { useRef, useEffect, useState, useMemo, useCallback } from "react";
 import MapSVG from "../assets/CampusGoMap.svg?react";
+import Floor4SVG from "../assets/4_andar.svg?react";
+import Floor7SVG from "../assets/7_andar.svg?react";
 import "./CampusMapViewer.css";
+import { mapData, mapData4Andar, mapData7Andar } from "../../utils/mockData";
 
 // ── Constantes ────────────────────────────────────────────────
 const TOTEM_NODE_ID = "n0"; // Nó fixo do quiosque
@@ -35,6 +38,10 @@ const NODE_CATEGORIES = {
   n15: { category: "elevador", icon: "🛗", label: "Elevadores" },
   sA1: { category: "sala", icon: "🏫", label: "Salas" },
   sB1: { category: "sala", icon: "🏫", label: "Salas" },
+  // 4 Andar
+  s404: { category: "sala", icon: "🏫", label: "Salas" },
+  // 7 Andar
+  rec7: { category: "social", icon: "💼", label: "Recepção" },
 };
 
 // Cores da legenda (precisa casar com o CSS)
@@ -246,11 +253,24 @@ export default function CampusMapViewer({
   handleMouseMove,
   handleMouseUp,
   children,
+  currentFloor = "terreo",
+  onResetFloor,
 }) {
-  // ── Nós visíveis (com name) separados do totem ──────────────
-  const visiblePins = useMemo(() => Object.values(nodes).filter((n) => !!n.name && n.id !== TOTEM_NODE_ID), [nodes]);
+  // ── Seleciona os nós do andar ativo ──────────────────────────
+  const activeNodes = useMemo(() => {
+    if (currentFloor === "4") return mapData4Andar?.nodes || {};
+    if (currentFloor === "7") return mapData7Andar?.nodes || {};
+    return nodes;
+  }, [currentFloor, nodes]);
 
-  const totemNode = nodes[TOTEM_NODE_ID];
+  // ── Nós visíveis (com name) separados do totem ──────────────
+  const visiblePins = useMemo(
+    () => Object.values(activeNodes).filter((n) => !!n.name && n.id !== TOTEM_NODE_ID),
+    [activeNodes]
+  );
+
+  const totemNode = activeNodes[TOTEM_NODE_ID];
+  const currentViewBox = currentFloor === "terreo" ? "0 0 1289 810" : "0 0 1289 818";
 
   // ── Estilo compartilhado de transformação ───────────────────
   const transformStyle = useMemo(
@@ -274,10 +294,16 @@ export default function CampusMapViewer({
     >
       <div className="campus-map-stage">
         {/* ─── Planta baixa SVG ───────────────────────────────── */}
-        <MapSVG className="campus-map-viewer__blueprint" style={{ ...transformStyle, width: "100%", height: "auto" }} />
+        {currentFloor === "4" ? (
+          <Floor4SVG className="campus-map-viewer__blueprint" style={{ ...transformStyle, width: "100%", height: "auto" }} />
+        ) : currentFloor === "7" ? (
+          <Floor7SVG className="campus-map-viewer__blueprint" style={{ ...transformStyle, width: "100%", height: "auto" }} />
+        ) : (
+          <MapSVG className="campus-map-viewer__blueprint" style={{ ...transformStyle, width: "100%", height: "auto" }} />
+        )}
 
         {/* ─── Overlay SVG (nós + rota) ───────────────────────── */}
-        <svg viewBox={SVG_VIEWBOX} className="campus-map-viewer__overlay" style={transformStyle}>
+        <svg viewBox={currentViewBox} className="campus-map-viewer__overlay" style={transformStyle}>
           {/* Definições reutilizáveis: gradientes, filtros, etc. */}
           <defs className="campus-map-viewer__defs">
             {/* Gradiente da rota */}
@@ -294,7 +320,7 @@ export default function CampusMapViewer({
           </defs>
 
           {/* ─── Rota animada (renderizada abaixo dos pins) ───── */}
-          <RoutePath path={path} nodes={nodes} />
+          <RoutePath path={path} nodes={activeNodes} />
 
           {/* ─── Pins dos POIs (categorias) ───────────────────── */}
           {visiblePins.map((node) => (
@@ -305,9 +331,8 @@ export default function CampusMapViewer({
           {totemNode && <TotemMarker node={totemNode} />}
         </svg>
       </div>
-
-      {/* ─── Legenda glassmorphism ──────────────────────────── */}
-      <Legend nodes={nodes} />
+      {/* ─── Legenda glassmorphism (somente térreo) ──────────── */}
+      {currentFloor === "terreo" && <Legend nodes={nodes} />}
 
       {/* ─── Painéis filhos (InfoPanel, SchedulePanel, etc.) ─ */}
       {children}
