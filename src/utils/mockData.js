@@ -196,17 +196,45 @@ export const mapData4Andar = {
   nodes: {
     n0: { id: "n0", name: "Elevador 4° andar - Ponto de Partida", x: 130, y: 100 },
     n3: { id: "n3", name: "Banheiros", x: 315, y: 100 },
-    sB1: { id: "sB1", name: "Sala 404", x: 527, y: 220 },
+    sA404: { id: "sA404", name: "Sala 404", x: 80, y: 450 },
+    sA401: { id: "sA401", name: "Sala 401", x: 235, y: 210 },
+    sA412: { id: "sA412", name: "Sala 412", x: 450, y: 100 },
 
     //Pontos curvas invisíveis
     x1: { id: "x1", x: 130, y: 150 },
     x2: { id: "x2", x: 315, y: 150 },
+    x3: { id: "x3", x: 155, y: 150 },
+    x4: { id: "x4", x: 155, y: 450 },
+    x5: { id: "x5", x: 155, y: 210 },
+    x6: { id: "x6", x: 315, y: 180 },
+    x7: { id: "x7", x: 415, y: 180 },
+    x8: { id: "x8", x: 415, y: 100 },
   },
   edges: [
     //=======Rota para os banheiros=======
     { from: "n0", to: "x1", w: 130 },
     { from: "x1", to: "x2", w: 130 },
     { from: "x2", to: "n3", w: 130 },
+
+    //=======Rota para sala 404=======
+    { from: "n0", to: "x1", w: 130 },
+    { from: "x1", to: "x3", w: 130 },
+    { from: "x3", to: "x4", w: 130 },
+    { from: "x4", to: "sA404", w: 130 },
+
+    //=======Rota para sala 401=======
+    { from: "n0", to: "x1", w: 130 },
+    { from: "x1", to: "x3", w: 130 },
+    { from: "x3", to: "x5", w: 130 },
+    { from: "x5", to: "sA401", w: 130 },
+
+    //=======Rota para sala 412=======
+    { from: "n0", to: "x1", w: 130 },
+    { from: "x1", to: "x2", w: 130 },
+    { from: "x2", to: "x6", w: 130 },
+    { from: "x6", to: "x7", w: 130 },
+    { from: "x7", to: "x8", w: 130 },
+    { from: "x8", to: "sA412", w: 130 },
   ],
 };
 

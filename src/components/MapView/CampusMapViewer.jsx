@@ -39,8 +39,11 @@ const NODE_CATEGORIES = {
   n16: { category: "social", icon: "🛎️", label: "Recepção" },
   n17: { category: "coordenacao", icon: "🏛️", label: "Coordenação" },
   n18: { category: "secretaria", icon: "📄", label: "Secretaria" },
-  sA1: { category: "sala", icon: "📚", label: "Salas" },
-  sB1: { category: "sala", icon: "📚", label: "Salas" },
+  sA1: { category: "sala", icon: "📚", label: "Sala Bloco A" },
+  sB1: { category: "sala", icon: "📚", label: "Sala Bloco B" },
+  sA401: { category: "sala", icon: "📚", label: "Sala 401" },
+  sA404: { category: "sala", icon: "📚", label: "Sala 404" },
+  sA412: { category: "sala", icon: "📚", label: "Sala 412" },
 };
 
 // Cores da legenda (precisa casar com o CSS)
