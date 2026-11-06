@@ -18,16 +18,8 @@ export default function SplashScreen({ onEnter }) {
   };
 
   return (
-    <div
-      className={`splash-screen ${fadeOut ? "fade-out" : ""}`}
-      onClick={handleExit}
-      onTouchStart={handleExit}
-    >
-      <img
-        src="/Logo-full-hd-transparente.png"
-        alt="CampusGO"
-        className="splash-logo"
-      />
+    <div className={`splash-screen ${fadeOut ? "fade-out" : ""}`} onClick={handleExit} onTouchStart={handleExit}>
+      <img src="/Logo-full-hd-transparente-new.png" alt="CampusGO" className="splash-logo" />
       <div className="touch-hint">
         <span className="touch-icon">👆</span>
         <span className="touch-text">Toque para continuar</span>
