@@ -1,6 +1,5 @@
 export const descriptionNodes = {
-
-//Descrição dos locais nós
+  //Descrição dos locais nós
   n0: "Totem de entrada",
   n1: "Bloco A - Entrada Principal",
   n2: "Bloco A - Elevadores (Térreo)",
@@ -17,8 +16,16 @@ export const descriptionNodes = {
   n13: "Pós-graduação Unifametro",
   n14: "Banheiros - Bloco B (Térreo)",
   n15: "Elevadores - Bloco B (Térreo)",
+  n16: "Receção - Bloco A (7° andar)",
+  n17: "Coordenação - Bloco A (7° andar)",
+  n18: "Secretaria - Bloco A (7° andar)",
 
-//Descrição das salas
- sA1: "Bloco A - 5° andar \n\n(Pegue o elevador para o 5° andar)",
- sB1: "Bloco B - 1° andar \n\n(Vá para o Bloco B)",
+  //Descrição das salal 4 andar
+  sA401: "Bloco A - 4° andar \n(Pegue o elevador)",
+  sA404: "Bloco A - 4° andar \n(Pegue o elevador)",
+  sA412: "Bloco A - 4° andar \n(Pegue o elevador)",
+
+  //Descrição das salas
+  sA1: "Bloco A - 5° andar \n\n(Pegue o elevador para o 5° andar)",
+  sB1: "Bloco B - 1° andar \n\n(Vá para o Bloco B)",
 };
