@@ -362,6 +362,7 @@
 
 /* ===== BARRA DE PESQUISA ===== */
 .search-bar {
+  position: relative;
   display: flex;
   align-items: center;
   background-color: #024221;
@@ -531,6 +532,45 @@
 
 .search-bar button:hover {
   background: #037b42;
+}
+
+.search-suggestions {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 1400;
+  max-height: min(60vh, 360px);
+  overflow-y: auto;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: #ffffff;
+  border: 1px solid #dbe5df;
+  border-radius: 14px;
+  box-shadow: 0 10px 28px rgba(2, 66, 33, 0.2);
+}
+
+.search-suggestions li {
+  margin: 0;
+}
+
+.search-suggestions li button {
+  display: block;
+  width: 100%;
+  height: auto;
+  padding: 10px 12px;
+  border-radius: 9px;
+  background: transparent;
+  color: #173b2a;
+  text-align: left;
+  font-size: 14px;
+}
+
+.search-suggestions li button:hover,
+.search-suggestions li button.active {
+  background: #e8f5ee;
+  color: #024221;
 }
 
 /* ===== PAINEL DE CRONOGRAMA (NOVO) ===== */

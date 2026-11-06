@@ -77,11 +77,21 @@ export default function MapView({ user, onLogout }) {
 
   const [isAccessibleOnly, setIsAccessibleOnly] = useState(false); // Pode ser ligado a um botão no UI
 
-  function requestRoute(destNode) {
+  function requestRoute(destNode, floor = currentFloor) {
     const origin = "n0"; // Ponto de partida fixo "Você está aqui"
-    const currentData = currentFloor === "4" ? mapData4Andar : currentFloor === "7" ? mapData7Andar : mapData;
+    const currentData = floor === "4" ? mapData4Andar : floor === "7" ? mapData7Andar : mapData;
     const routeResult = calculateRoute(origin, destNode, isAccessibleOnly, currentData);
     setPath(routeResult.path);
+  }
+
+  function handleSearchDestination(destination) {
+    setCurrentFloor(destination.floor);
+    setSelected({
+      ...destination,
+      name: destination.title,
+      resumo: descriptionNodes[destination.id] || "Local não mapeado",
+    });
+    requestRoute(destination.id, destination.floor);
   }
 
   function handleWheel(e) {
@@ -159,7 +169,12 @@ export default function MapView({ user, onLogout }) {
       />
 
       {/* TOPO */}
-      <Topbar user={user} menuOpen={menuOpen} onLogout={onLogout} />
+      <Topbar
+        user={user}
+        menuOpen={menuOpen}
+        onLogout={onLogout}
+        onSelectDestination={handleSearchDestination}
+      />
 
       {/* MAPA — CampusMapViewer Premium */}
       <CampusMapViewer
