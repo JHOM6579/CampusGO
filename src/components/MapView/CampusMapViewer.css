@@ -12,10 +12,14 @@
   margin: 100px 28px 28px 100px;
   border: 2px solid rgba(255, 255, 255, 0.9);
   border-radius: 20px;
-  box-shadow: 0 18px 48px rgba(17, 48, 35, 0.16), inset 0 0 0 1px rgba(11, 66, 42, 0.06);
+  box-shadow:
+    0 18px 48px rgba(17, 48, 35, 0.16),
+    inset 0 0 0 1px rgba(11, 66, 42, 0.06);
   user-select: none;
   cursor: grab;
-  transition: margin-left 0.4s ease, filter 0.3s ease;
+  transition:
+    margin-left 0.4s ease,
+    filter 0.3s ease;
   z-index: 10;
 }
 
@@ -283,7 +287,6 @@
 }
 
 @keyframes campus-totem-glow-breathe {
-
   0%,
   100% {
     r: 16;
@@ -353,6 +356,18 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.5);
   z-index: 800;
   scrollbar-width: thin;
+}
+
+.campus-map-viewer--floor-transition .campus-legend {
+  top: 16px;
+  bottom: auto;
+  max-height: calc(100% - 32px);
+  transform: none;
+}
+
+.campus-map-viewer .info-panel {
+  max-height: min(45%, calc(100% - 32px));
+  overflow-y: auto;
 }
 
 .campus-legend__title {
@@ -472,6 +487,13 @@
     transform: none;
   }
 
+  .campus-map-viewer--floor-transition .campus-legend {
+    top: auto;
+    bottom: 12px;
+    max-height: 144px;
+    transform: none;
+  }
+
   .campus-legend__list {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -485,6 +507,8 @@
     left: auto;
     width: 190px;
     max-width: calc(100% - 24px);
+    max-height: calc(100% - 192px);
+    overflow-y: auto;
   }
 }
 

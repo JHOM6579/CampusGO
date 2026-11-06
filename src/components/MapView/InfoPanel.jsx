@@ -2,7 +2,13 @@
 import React from "react";
 import "../MapView.css"; // aproveita os estilos já existentes
 
-export default function InfoPanel({ selected, path, onCancelRoute }) {
+export default function InfoPanel({
+  selected,
+  path,
+  floorTransition,
+  onContinueFloorTransition,
+  onCancelRoute,
+}) {
   return (
     <div className="info-panel">
       <h3>Informações</h3>
@@ -10,6 +16,16 @@ export default function InfoPanel({ selected, path, onCancelRoute }) {
           <>
             <div><b>{selected.name}</b></div>
             <div>{selected.resumo}</div>
+            {floorTransition && (
+              <div className="floor-transition-actions">
+                <button
+                  className="floor-transition-button"
+                  onClick={onContinueFloorTransition}
+                >
+                  Seguir para {floorTransition.floor === "terreo" ? "o Térreo" : `o ${floorTransition.floor}º andar`}
+                </button>
+              </div>
+            )}
             {/* ✅ Só aparece se houver rota traçada */}
             {path && path.length > 0 && (
               <div style={{ marginTop: 8 }}>

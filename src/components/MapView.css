@@ -480,6 +480,27 @@
   overflow-wrap: anywhere;
 }
 
+.floor-transition-actions {
+  margin-top: 10px;
+}
+
+.floor-transition-button {
+  width: 100%;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: #00b366;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.floor-transition-button:hover {
+  background: #008f52;
+}
+
 /* ===== TOPO ===== */
 .topbar-content {
   width: 100%;

@@ -13,6 +13,7 @@ import "./MapView.css";
 export default function MapView({ user, onLogout }) {
   const [selected, setSelected] = useState(null);
   const [path, setPath] = useState([]);
+  const [floorTransition, setFloorTransition] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentFloor, setCurrentFloor] = useState("terreo");
   // const [showPresencePopup, setShowPresencePopup] = useState(false);
@@ -47,10 +48,7 @@ export default function MapView({ user, onLogout }) {
         return (viewportSize - scaledSize) / 2;
       }
 
-      return Math.min(
-        edgeGutter,
-        Math.max(viewportSize - scaledSize - edgeGutter, value),
-      );
+      return Math.min(edgeGutter, Math.max(viewportSize - scaledSize - edgeGutter, value));
     };
 
     return {
@@ -77,14 +75,55 @@ export default function MapView({ user, onLogout }) {
 
   const [isAccessibleOnly, setIsAccessibleOnly] = useState(false); // Pode ser ligado a um botão no UI
 
+  function getFloorData(floor) {
+    if (floor === "4") return mapData4Andar;
+    if (floor === "7") return mapData7Andar;
+    return mapData;
+  }
+
+  function getFloorLabel(floor) {
+    if (floor === "4") return "4º andar";
+    if (floor === "7") return "7º andar";
+    return "Térreo";
+  }
+
   function requestRoute(destNode, floor = currentFloor) {
     const origin = "n0"; // Ponto de partida fixo "Você está aqui"
-    const currentData = floor === "4" ? mapData4Andar : floor === "7" ? mapData7Andar : mapData;
-    const routeResult = calculateRoute(origin, destNode, isAccessibleOnly, currentData);
+    const routeResult = calculateRoute(origin, destNode, isAccessibleOnly, getFloorData(floor));
     setPath(routeResult.path);
   }
 
   function handleSearchDestination(destination) {
+    if (destination.floor !== currentFloor) {
+      const currentFloorData = getFloorData(currentFloor);
+      const transferNodeId = currentFloor === "terreo" ? "n2" : "n0";
+      const transferNode = currentFloorData.nodes[transferNodeId];
+      const transferPath = calculateRoute("n0", transferNodeId, isAccessibleOnly, currentFloorData).path;
+
+      setFloorTransition(destination);
+      setSelected({
+        ...transferNode,
+        name: currentFloor === "terreo" ? "Elevadores — Térreo" : `Elevador — ${getFloorLabel(currentFloor)}`,
+        resumo: `Ponto de transição para ${getFloorLabel(destination.floor)}. Siga até o elevador e continue para ver a rota do destino.`,
+      });
+      setPath(transferPath);
+      return;
+    }
+
+    setFloorTransition(null);
+    setSelected({
+      ...destination,
+      name: destination.title,
+      resumo: descriptionNodes[destination.id] || "Local não mapeado",
+    });
+    requestRoute(destination.id, destination.floor);
+  }
+
+  function continueFloorTransition() {
+    if (!floorTransition) return;
+
+    const destination = floorTransition;
+    setFloorTransition(null);
     setCurrentFloor(destination.floor);
     setSelected({
       ...destination,
@@ -163,28 +202,26 @@ export default function MapView({ user, onLogout }) {
         currentFloor={currentFloor}
         onSelectFloor={(floor) => {
           setCurrentFloor(floor);
+          setFloorTransition(null);
           setSelected(null);
           setPath([]);
         }}
       />
 
       {/* TOPO */}
-      <Topbar
-        user={user}
-        menuOpen={menuOpen}
-        onLogout={onLogout}
-        onSelectDestination={handleSearchDestination}
-      />
+      <Topbar user={user} menuOpen={menuOpen} onLogout={onLogout} onSelectDestination={handleSearchDestination} />
 
       {/* MAPA — CampusMapViewer Premium */}
       <CampusMapViewer
         currentFloor={currentFloor}
+        hasFloorTransition={Boolean(floorTransition)}
         onResetFloor={() => setCurrentFloor("terreo")}
         nodes={mapData.nodes}
         edges={mapData.edges}
         path={path}
         selected={selected}
         onSelectNode={(node) => {
+          setFloorTransition(null);
           if (selected?.id === node.id) {
             setSelected(null);
             setPath([]);
@@ -206,8 +243,17 @@ export default function MapView({ user, onLogout }) {
         handleMouseUp={handleMouseUp}
       >
         {/* PAINEL DE INFORMAÇÕES */}
-        <InfoPanel selected={selected} path={path} onCancelRoute={() => setPath([])} />
-
+        <InfoPanel
+          selected={selected}
+          path={path}
+          floorTransition={floorTransition}
+          onContinueFloorTransition={continueFloorTransition}
+          onCancelRoute={() => {
+            setFloorTransition(null);
+            setSelected(null);
+            setPath([]);
+          }}
+        />
       </CampusMapViewer>
 
       {/* {showPresencePopup && <PresencePopup onStay={() => setShowPresencePopup(false)} onLogout={onLogout} />} */}

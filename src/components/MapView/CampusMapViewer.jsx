@@ -214,11 +214,7 @@ function Legend({ nodes }) {
   }, [nodes]);
 
   return (
-    <div
-      className="campus-legend"
-      onMouseDown={(event) => event.stopPropagation()}
-      onWheel={(event) => event.stopPropagation()}
-    >
+    <div className="campus-legend" onMouseDown={(event) => event.stopPropagation()} onWheel={(event) => event.stopPropagation()}>
       <div className="campus-legend__title">Legenda</div>
       <ul className="campus-legend__list">
         {/* Totem sempre primeiro */}
@@ -256,6 +252,7 @@ export default function CampusMapViewer({
   handleMouseUp,
   children,
   currentFloor = "terreo",
+  hasFloorTransition = false,
   onResetFloor,
 }) {
   // ── Seleciona os nós do andar ativo ──────────────────────────
@@ -266,10 +263,7 @@ export default function CampusMapViewer({
   }, [currentFloor, nodes]);
 
   // ── Nós visíveis (com name) separados do totem ──────────────
-  const visiblePins = useMemo(
-    () => Object.values(activeNodes).filter((n) => !!n.name && n.id !== TOTEM_NODE_ID),
-    [activeNodes]
-  );
+  const visiblePins = useMemo(() => Object.values(activeNodes).filter((n) => !!n.name && n.id !== TOTEM_NODE_ID), [activeNodes]);
 
   const totemNode = activeNodes[TOTEM_NODE_ID];
   const currentViewBox = currentFloor === "terreo" ? "0 0 1289 810" : "0 0 1289 818";
@@ -286,7 +280,7 @@ export default function CampusMapViewer({
 
   return (
     <div
-      className="campus-map-viewer"
+      className={`campus-map-viewer ${hasFloorTransition ? "campus-map-viewer--floor-transition" : ""}`}
       ref={viewerRef}
       onWheel={handleWheel}
       onMouseDown={handleMouseDown}
